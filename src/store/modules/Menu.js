@@ -4,15 +4,15 @@ const state = {
     {
       id: 1,
       name: "員工出勤表",
-      router: ""
+      router: "Attendance"
     }, {
       id: 2,
       name: "醫療普及表",
-      router: ""
+      router: "Patients"
     }, {
       id: 3,
       name: "病歷表",
-      router: ""
+      router: "Cases"
     }
   ]
 };

@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <Header />
-    <Sidebar />
+    <div class="wrapper">
+      <Sidebar />
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -14,7 +17,7 @@ export default {
   name: "Home",
   components: {
     Header,
-    Sidebar,
-  },
+    Sidebar
+  }
 };
 </script>
