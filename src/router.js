@@ -13,7 +13,6 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
     component: () => import('@V/Home.vue'),
     children: [
       {
