@@ -11,26 +11,24 @@ const state = {
       birthday: "1980/12/1", // 生日
       age: "40", // 年齡
       phone: "7386077", // 電話
-      emergencyContact: { // 緊急連絡人
-        name: "王正祥",
-        phone: "5240156"
-      }
+      contactName: "王正祥", // 緊急連絡人
+      contactPhone: "5240156"
     }
   ]
 };
 
 const actions = {
-  // 新增清單項目
-  // createTodoItem({ commit }, payload) {
-  //   commit("setTodoItem", payload)
-  // },
+  // 新增資料
+  createPatientData({ commit }, payload) {
+    commit("addPatientData", payload)
+  },
 };
 
 const mutations = {
   // 存入vuex
-  // setTodoItem(state, payload) {
-  //   state.todoList = payload
-  // },
+  addPatientData(state, payload) {
+    state.patientList.splice(0, 0, payload)
+  },
 };
 
 const getters = {

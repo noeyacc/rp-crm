@@ -28,7 +28,12 @@ const routes = [
       {
         path: '/patients',
         name: 'Patients',
-        component: () => import('@V/Patients.vue')
+        component: () => import('@V/Patients/List.vue')
+      },
+      {
+        path: '/patients/create',
+        name: 'PatientsCreate',
+        component: () => import('@V/Patients/Detail.vue')
       },
       {
         path: '/cases',
