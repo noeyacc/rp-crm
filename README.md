@@ -1,24 +1,38 @@
-# init-vue
+# GTA5 RP 醫療服務系統 Demo
 
-## Project setup
-```
+### Usage plugins
+
+Javascript framework: vue
+UI framework: vuetify
+
+### 安裝全域 node_modules
+
+```javascript
 yarn install
 ```
 
-### Compiles and hot-reloads for development
-```
+### 快速啟動專案
+
+```javascript
 yarn serve
 ```
 
-### Compiles and minifies for production
-```
+### 打包 & 本地啟 server 預覽
+
+1. 打包產生 dist 資料夾
+
+```javascript
 yarn build
 ```
 
-### Lints and fixes files
+2. 本地啟 server 預覽
+
 ```
-yarn lint
+$ yarn start
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Lints and fixes files
+
+```javascript
+yarn lint
+```
