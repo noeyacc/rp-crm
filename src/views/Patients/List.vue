@@ -1,6 +1,6 @@
 <template>
-  <v-container class="lighten-5">
-    <v-row>
+  <div>
+    <v-row justify="space-between">
       <v-col>
         <v-btn elevation="2" @click="goAdd">新增</v-btn>
       </v-col>
@@ -27,7 +27,7 @@
         </v-data-table>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 <script>
 import { mapGetters } from "vuex";

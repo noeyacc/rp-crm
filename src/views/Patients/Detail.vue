@@ -1,5 +1,5 @@
 <template>
-  <v-container class="lighten-5">
+  <div>
     <v-row>
       <v-col :cols="6">
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -43,7 +43,12 @@
                 offset-y
                 min-width="290px"
               >
-                <template v-slot:activator="{ on, attrs }">
+                <template
+                  v-slot:activator="{
+                    on,
+                    attrs
+                  }"
+                >
                   <v-text-field
                     v-model="formData.birthday"
                     label="出生年月日"
@@ -100,7 +105,7 @@
         </v-form>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 <script>
 import { mapActions } from "vuex";
@@ -144,6 +149,11 @@ export default {
       });
     },
     cancel() {
+      this.$router.push({
+        name: "Patients"
+      });
+      // 重置表單驗證
+      this.$refs.form.resetValidation();
       // 重置表單
       this.$refs.form.reset();
     }
