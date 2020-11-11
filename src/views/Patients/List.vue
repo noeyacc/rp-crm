@@ -18,11 +18,9 @@
             <span>{{ item.contactPhone }}</span>
           </template>
           <template v-slot:item.actions="{ item }">
-            <span class="cursor--pointer" @click="editItem(item)">編輯</span>
-            <!-- todoo: import icons -->
-            <!-- <v-icon @click="editItem(item)">
-                mdi-pencil
-              </v-icon>-->
+            <v-icon small @click="editItem(item)">
+              mdi-pencil
+            </v-icon>
           </template>
         </v-data-table>
       </v-col>
