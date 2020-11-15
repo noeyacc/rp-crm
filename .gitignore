@@ -3,7 +3,7 @@ node_modules
 /dist
 
 # private files
-src/firebase/dbConfig.js
+src/plugins/dbConfig.js
 
 # local env files
 .env.local

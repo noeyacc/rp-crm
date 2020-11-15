@@ -30,10 +30,12 @@
 <script>
 import { mapGetters } from "vuex";
 import { deepCopy } from "@UTIL/other";
+import { db } from "@/plugins/firebase";
 export default {
   name: "PatientList",
   data() {
     return {
+      firelist: [],
       tableTitles: [
         { text: "病例編號", value: "id", align: "center" },
         { text: "姓名", value: "name", align: "center" },
@@ -45,6 +47,10 @@ export default {
         { text: "操作", value: "actions", sortable: false }
       ]
     };
+  },
+  // todoo: check issue for get data fail
+  firestore: {
+    firelist: db.collection("patients")
   },
   computed: {
     ...mapGetters({
@@ -58,6 +64,20 @@ export default {
       });
       return list;
     }
+  },
+  created() {
+    db.collection("patients")
+      .doc("PA00001")
+      .get()
+      .then(snapshot => {
+        // console.log("patients_PA00001: ", snapshot.data());
+        this.detail = snapshot.data();
+        // return { status: "success", data: snapshot.data() };
+      })
+      .catch(error => {
+        console.log("error: ", error);
+        // return { status: "fail", data: error };
+      });
   },
   methods: {
     goAdd() {
