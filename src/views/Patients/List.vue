@@ -18,7 +18,7 @@
             <span>{{ item.contactPhone }}</span>
           </template>
           <template v-slot:item.actions="{ item }">
-            <v-icon small @click="editItem(item)">
+            <v-icon small @click="goDetail(item)">
               mdi-pencil
             </v-icon>
           </template>
@@ -28,49 +28,38 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { deepCopy } from "@UTIL/other";
+// import { mapGetters } from "vuex";
+// import { deepCopy } from "@UTIL/other";
 import { db } from "@/plugins/firebase";
 export default {
   name: "PatientList",
   data() {
     return {
-      firelist: [],
+      list: [],
       tableTitles: [
-        { text: "病例編號", value: "id", align: "center" },
-        { text: "姓名", value: "name", align: "center" },
-        { text: "性別", value: "sexText", align: "center" },
-        { text: "血型", value: "bloodType", align: "center" },
-        { text: "出生年月日", value: "birthday", align: "center" },
-        { text: "連絡電話", value: "phone", align: "center" },
-        { text: "緊急連絡人", value: "emergencyContact", align: "center" },
+        { text: "病例編號", value: "id", align: "center", sortable: false },
+        { text: "姓名", value: "name", align: "center", sortable: false },
+        { text: "性別", value: "sexText", align: "center", sortable: false },
+        { text: "血型", value: "bloodType", align: "center", sortable: false },
+        { text: "出生年月日", value: "birthdayText", align: "center", sortable: false },
+        { text: "連絡電話", value: "phone", align: "center", sortable: false },
+        { text: "緊急連絡人", value: "emergencyContact", align: "center", sortable: false },
         { text: "操作", value: "actions", sortable: false }
       ]
     };
   },
-  // todoo: check issue for get data fail
-  firestore: {
-    firelist: db.collection("patients")
-  },
   computed: {
-    ...mapGetters({
-      patientList: "Patients/patientList"
-    }),
-    list() {
-      let list = deepCopy(this.patientList || []);
-      list = list.map(i => {
-        i.sexText = i.sex === 1 ? "男" : "女";
-        return i;
-      });
-      return list;
-    }
+    // ...mapGetters({
+    //   patientList: "Patients/patientList"
+    // })
   },
   created() {
+    this.getList();
     db.collection("patients")
       .doc("PA00001")
       .get()
       .then(snapshot => {
-        // console.log("patients_PA00001: ", snapshot.data());
+        console.log("patients_PA00001: ", snapshot.data());
         this.detail = snapshot.data();
         // return { status: "success", data: snapshot.data() };
       })
@@ -80,13 +69,40 @@ export default {
       });
   },
   methods: {
+    // 取得列表
+    async getList() {
+      db.collection("patients")
+        .get()
+        .then(docs => {
+          let list = [];
+          docs.forEach(el => {
+            console.log("el: ", el);
+            let data = el.data();
+            data.birthdayText = new Date(data.birthday.seconds * 1000);
+            data.sexText = el.sex === 1 ? "男" : "女";
+            data.birthdayText = data.birthdayText.toLocaleDateString().replace(/\//g, "-");
+            list.push({
+              ...data
+            });
+          });
+          this.list = list;
+        })
+        .catch(error => {
+          console.log("Get list fail", error);
+        });
+    },
     goAdd() {
       this.$router.push({
         name: "PatientsCreate"
       });
     },
-    editItem(item) {
-      console.log("item: ", item);
+    goDetail(item) {
+      this.$router.push({
+        name: "PatientsDetail",
+        params: {
+          id: item.id
+        }
+      });
     }
   }
 };
