@@ -108,12 +108,14 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { db } from "@/plugins/firebase";
 import { deepCopy } from "@UTIL/other";
+import { paddingZeroLeft } from "@UTIL/format";
 export default {
   name: "PatientDetail",
   data() {
     return {
+      id: "",
       valid: true,
       datepickerMenu: false,
       formData: {
@@ -128,25 +130,73 @@ export default {
       }
     };
   },
+  created() {
+    let id = this.$route.params.id;
+    id && ((this.id = id), this.getData(id));
+    id || this.getNewDataID();
+  },
   methods: {
-    ...mapActions({
-      createPatientData: "Patients/createPatientData"
-    }),
+    getData(id) {
+      db.collection("patients")
+        .doc(id)
+        .get()
+        .then(snapshot => {
+          let data = snapshot.data();
+          data.birthday = new Date(data.birthday.seconds * 1000);
+          data.sex = data.sex === 1 ? "男" : "女";
+          // this.formData = data;
+          this.$refs.form.resetValidation();
+        })
+        .catch(error => {
+          console.log("Get Detail data fail: ", error);
+        });
+    },
     validate() {
       // 重置表單驗證
       // this.$refs.form.resetValidation();
       // 表單驗證
       if (!this.$refs.form.validate()) return;
       let params = deepCopy(this.formData);
-      params.birthday = new Date(params.birthday).toUTCString();
       this.handleCreate(params);
     },
-    handleCreate(params) {
+    async handleCreate(params) {
+      params.birthday = new Date(params.birthday).getTime();
+      params.sex = params.sex === "男" ? 1 : 2;
+      params.id = `PA${paddingZeroLeft(this.id, 5)}`;
       // 新增患者資料
-      this.createPatientData(params);
+      await db
+        .collection("patients")
+        .doc(params.id)
+        .set(params)
+        .then(() => {
+          console.log("Add success");
+          return { status: "success" };
+        })
+        .catch(() => {
+          console.log("Add fail");
+          return { status: "fail" };
+        });
       this.$router.push({
         name: "Patients"
       });
+    },
+    // 取得新資料Id
+    getNewDataID() {
+      return db
+        .collection("patients")
+        .get()
+        .then(docs => {
+          let list = [];
+          docs.forEach(el => {
+            list.push({
+              ...el.data()
+            });
+          });
+          this.id = list.length + 1;
+        })
+        .catch(error => {
+          console.log("Get list fail", error);
+        });
     },
     cancel() {
       this.$router.push({

@@ -48,25 +48,8 @@ export default {
       ]
     };
   },
-  computed: {
-    // ...mapGetters({
-    //   patientList: "Patients/patientList"
-    // })
-  },
   created() {
     this.getList();
-    db.collection("patients")
-      .doc("PA00001")
-      .get()
-      .then(snapshot => {
-        console.log("patients_PA00001: ", snapshot.data());
-        this.detail = snapshot.data();
-        // return { status: "success", data: snapshot.data() };
-      })
-      .catch(error => {
-        console.log("error: ", error);
-        // return { status: "fail", data: error };
-      });
   },
   methods: {
     // 取得列表
@@ -76,7 +59,6 @@ export default {
         .then(docs => {
           let list = [];
           docs.forEach(el => {
-            console.log("el: ", el);
             let data = el.data();
             data.birthdayText = new Date(data.birthday.seconds * 1000);
             data.sexText = el.sex === 1 ? "男" : "女";
