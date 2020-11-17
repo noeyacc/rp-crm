@@ -43,8 +43,8 @@ export default {
         { text: "血型", value: "bloodType", align: "center", sortable: false },
         { text: "出生年月日", value: "birthdayText", align: "center", sortable: false },
         { text: "連絡電話", value: "phone", align: "center", sortable: false },
-        { text: "緊急連絡人", value: "emergencyContact", align: "center", sortable: false },
-        { text: "操作", value: "actions", sortable: false }
+        { text: "緊急連絡人", value: "emergencyContact", align: "center", sortable: false }
+        // { text: "操作", value: "actions", sortable: false }
       ]
     };
   },
@@ -60,13 +60,14 @@ export default {
           let list = [];
           docs.forEach(el => {
             let data = el.data();
-            data.birthdayText = new Date(data.birthday.seconds * 1000);
-            data.sexText = el.sex === 1 ? "男" : "女";
+            data.birthdayText = new Date(data.birthday.seconds * 1000 || data.birthday);
+            data.sexText = data.sex === 1 ? "男" : "女";
             data.birthdayText = data.birthdayText.toLocaleDateString().replace(/\//g, "-");
             list.push({
               ...data
             });
           });
+          console.log("list: ", list);
           this.list = list;
         })
         .catch(error => {

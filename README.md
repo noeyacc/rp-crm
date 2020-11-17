@@ -2,8 +2,9 @@
 
 ### Usage plugins
 
-Javascript framework: vue
-UI framework: vuetify
+Javascript framework: vue  
+UI framework: vuetify  
+Database(Firebase): vuefire
 
 ### 安裝全域 node_modules
 
